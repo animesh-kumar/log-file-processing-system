@@ -11,6 +11,10 @@ Log File Processing System is a command line tool intended at processing all log
 
 ## Design
 
+### Class Diagram
+
+![](https://github.com/animesh-kumar/log-file-processing-system/blob/master/design/class-diagram.JPG)
+
 ### Algorithm
 1. The entry point of the program is Driver. The Driver takes in two arguments, Path of the log file directory and the number of threads the user wants to run for processing the log files. 
 2. Driver class delegates the request to generate line numbers for every valid log file to LogParser. 
@@ -24,6 +28,13 @@ Run the Driver class with the requied program arguments
 The program takes two argument:-<br/>
 1. Relative or absolute path of the directory containing the log files <br/>
 2. Number of threads user wants in the execution<br/>
+
+Using Maven :- 
+This project can be built using maven by running the command
+```
+mvn clean install
+```
+inside the code directory of the project
 
 Sample Program Argument :-
 ```
