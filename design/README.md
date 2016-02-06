@@ -29,6 +29,13 @@ The program takes two argument:-<br/>
 1. Relative or absolute path of the directory containing the log files <br/>
 2. Number of threads user wants in the execution<br/>
 
+Using Maven :- 
+This project can be built using maven by running the command
+```
+mvn clean install
+```
+inside the code directory of the project
+
 Sample Program Argument :-
 ```
  "C:\log-file-processing-system\code\src\main\resources\testInput"  4
