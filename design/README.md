@@ -6,6 +6,7 @@
    1. [Prerequisites](#prerequisites)
    2. [Set up](#set-up)
 3. [Usage](#usage)
+4. [Design](#design)
 
 
 ## About
