@@ -16,13 +16,14 @@ public class Utils {
         }
         String outputFileName = folderName + File.separator + "dirFileList.txt";
         String command;
+        Process p;
         if(System.getProperty("os.name").startsWith("Windows")) {
             command = "cmd /c dir \"" + folderName + "\" /b >> \"" + outputFileName + "\"";
+            p = Runtime.getRuntime().exec(command);
         }else{
-            command = "bash - c ls " + folderName + " >> " + outputFileName;
+            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", "ls '" + folderName + "' >> '" + outputFileName + "'");
+            p = pb.start();
         }
-
-        Process p = Runtime.getRuntime().exec(command);
         p.waitFor();
 
         return outputFileName;
