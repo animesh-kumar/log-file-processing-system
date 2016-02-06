@@ -17,7 +17,7 @@ public class Utils {
         String outputFileName = folderName + File.separator + "dirFileList.txt";
         String command;
         if(System.getProperty("os.name").startsWith("Windows")) {
-            command = "cmd /c dir " + folderName + " /b >> " + outputFileName;
+            command = "cmd /c dir \"" + folderName + "\" /b >> \"" + outputFileName + "\"";
         }else{
             command = "bash - c ls " + folderName + " >> " + outputFileName;
         }
@@ -30,9 +30,9 @@ public class Utils {
 
     public static int getLineCountForFile(String filePath) {
         int lineCount = 0;
-        try {
-            LineNumberReader reader = new LineNumberReader(new FileReader(filePath));
-            while(reader.readLine() != null) lineCount++;
+        try (LineNumberReader reader = new LineNumberReader(new FileReader(filePath))){
+            String line;
+            while((line = reader.readLine()) != null && !line.isEmpty()) lineCount++;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

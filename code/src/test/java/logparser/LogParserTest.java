@@ -1,4 +1,3 @@
-/*
 package logparser;
 
 import org.junit.Assert;
@@ -11,12 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-*/
-/**
- * Unit test cases
- *//*
-
 public class LogParserTest {
+
+    private static int NO_OF_THREADS = 2;
 
     @Test
     public void testDirectoryListing() throws Exception{
@@ -26,7 +22,7 @@ public class LogParserTest {
         Arrays.sort(filesInCurrentDir);
         System.out.println(Arrays.toString(filesInCurrentDir));
 
-        String dirListFile = LogParserUtil.createFileNamesFile(currentDirName);
+        String dirListFile = Utils.createFileNamesFile(currentDirName);
         System.out.println(dirListFile);
         File dirFileList = new File(dirListFile);
         String [] filesInFileList;
@@ -50,7 +46,7 @@ public class LogParserTest {
     @Test
     public void testLineCount() throws Exception{
         String inputFile = "src\\main\\resources\\testInput\\logtest-2016-01-01.log";
-        int numberOfLines = LogParserUtil.lineCount(null, inputFile);
+        int numberOfLines = Utils.getLineCountForFile(inputFile);
         System.out.println(numberOfLines);
         Assert.assertEquals(3, numberOfLines);
     }
@@ -58,9 +54,10 @@ public class LogParserTest {
     @Test
     public void testLineCountDir() throws Exception{
         String folderName = "src\\main\\resources\\testInput";
-        String dirFiles = LogParserUtil.createFileNamesFile(folderName);
+        String dirFiles = Utils.createFileNamesFile(folderName);
         List<Integer> expectedValues = new ArrayList<>(Arrays.asList(0, 3, 5, 5));
-        List<Integer> filesLineCount = LogParserUtil.getLineCount(folderName, dirFiles);
+        ThreadPool threadPool = new ThreadPool(NO_OF_THREADS, folderName);
+        List<Integer> filesLineCount = threadPool.getParallelPrefix(dirFiles);
         new File(dirFiles).delete();
         Assert.assertEquals(expectedValues, filesLineCount);
     }
@@ -77,31 +74,30 @@ public class LogParserTest {
 
     @Test
     public void testLineAddition() throws Exception{
-        String fileName = "src\\main\\resources\\testInput\\logtest-2016-01-01.log";
-        String newFileExtension = "tmp";
-        LogParserUtil.addLineNumbers(null, fileName, 1, newFileExtension);
+        String folderName = "src\\main\\resources\\testInput";
+        LogParser.generateLineNumbers(folderName, NO_OF_THREADS);
     }
 
     @Test
     public void testGenerateLineNumbers() throws Exception{
         String folderName = "src\\main\\resources\\testInput";
-        String newFileExtension = "tmp";
+        String newFileExtension = "";
         String [] files = new File(folderName).list();
-        LogParserUtil.generateLineNumbers(folderName, newFileExtension, 1);
+        LogParser.generateLineNumbers(folderName, NO_OF_THREADS);
         int lineNumber = 1;
         Arrays.sort(files);
         for(String fileName : files){
             if(!Constants.LOG_PATTERN.matcher(fileName).matches()) continue;
             String fullFileName = folderName + File.separator + fileName;
             File inputFile = new File(fullFileName);
-            File outputFile = new File(fullFileName + "_" + newFileExtension);
+            File outputFile = new File(fullFileName);
             try(BufferedReader inputReader = new BufferedReader(new FileReader(inputFile));
                 BufferedReader outputReader = new BufferedReader(new FileReader(outputFile))){
                 String inLine;
                 String outLine;
-                while((inLine = inputReader.readLine()) != null){
+                while((inLine = inputReader.readLine()) != null && !inLine.isEmpty()){
                     outLine = outputReader.readLine();
-                    Assert.assertEquals(lineNumber + "," + inLine, outLine);
+                    Assert.assertEquals(inLine, outLine);
                     lineNumber++;
                 }
                 Assert.assertNull(outputReader.readLine());
@@ -109,8 +105,5 @@ public class LogParserTest {
             }
             outputFile.delete();
         }
-
     }
-
 }
-*/

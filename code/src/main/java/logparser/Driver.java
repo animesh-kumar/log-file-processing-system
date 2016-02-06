@@ -14,8 +14,7 @@ public class Driver {
         String folderName = args[0];
         Integer numberOfThreads = args.length > 1 ? 1 : Integer.parseInt(args[1]);
 
-        LogParser parser = new LogParser();
-        parser.generateLineNumbers(folderName, numberOfThreads);
+        LogParser.generateLineNumbers(folderName, numberOfThreads);
     }
 
 }
